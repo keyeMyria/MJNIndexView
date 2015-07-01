@@ -219,6 +219,11 @@
 				CLASSPREFIX = MJNIndexForTableView;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Mateusz Nuckowski";
+				TargetAttributes = {
+					409C7C2B177C560100BD4EEE = {
+						DevelopmentTeam = 2MSMC4S99B;
+					};
+				};
 			};
 			buildConfigurationList = 409C7C27177C560100BD4EEE /* Build configuration list for PBXProject "MJNIndexForTableView" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -371,11 +376,13 @@
 		409C7C53177C560100BD4EEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MJNIndexForTableView/MJNIndexForTableView-Prefix.pch";
 				INFOPLIST_FILE = "MJNIndexForTableView/MJNIndexForTableView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "67b7e4e1-d2bf-4a45-a5d1-8e49e52eae12";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -383,11 +390,13 @@
 		409C7C54177C560100BD4EEE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MJNIndexForTableView/MJNIndexForTableView-Prefix.pch";
 				INFOPLIST_FILE = "MJNIndexForTableView/MJNIndexForTableView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "67b7e4e1-d2bf-4a45-a5d1-8e49e52eae12";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

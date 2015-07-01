@@ -275,8 +275,13 @@
     
     // calculating size of all index items
     for (NSString *item in self.indexItems) {
-        CGSize currentItemSize = [item sizeWithFont:self.font];
-        
+		CGSize currentItemSize = CGSizeZero;
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+			currentItemSize = [item sizeWithFont:self.font];
+		} else {
+			currentItemSize = [item sizeWithAttributes:@{NSFontAttributeName:self.font}];
+		}
+		
         // if index items are smaller than 5.0 points display alert and do not display index at all
         if (currentItemSize.height < 5.0) {
             //[NSException raise:@"Too many items in index" format:@"Items are to small to be legible"];
@@ -290,8 +295,13 @@
     }
     
     // calculating if deflectionRange is not too small based on the width of the longest index item using the font for selected item
-    for (NSString *item in self.indexItems) {
-        CGSize currentItemSize = [item sizeWithFont:self.selectedItemFont];
+	for (NSString *item in self.indexItems) {
+		CGSize currentItemSize = CGSizeZero;
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+			currentItemSize = [item sizeWithFont:self.selectedItemFont];
+		} else {
+			currentItemSize = [item sizeWithAttributes:@{NSFontAttributeName:self.selectedItemFont}];
+		}
         if (currentItemSize.width > self.maxWidth) {
             self.maxWidth = currentItemSize.width;
         }
@@ -398,12 +408,21 @@
         CGPoint point;
         
         if (self.itemsAligment == NSTextAlignmentCenter){
-            
-            CGSize itemSize = [item sizeWithFont:self.font];
+			CGSize itemSize = CGSizeZero;
+			if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+				itemSize = [item sizeWithFont:self.font];
+			} else {
+				itemSize = [item sizeWithAttributes:@{NSFontAttributeName:self.font}];
+			}
+			
             point.x = self.firstItemOrigin.x - itemSize.width/2;
         } else if (self.itemsAligment == NSTextAlignmentRight) {
-            
-            CGSize itemSize = [item sizeWithFont:self.font];
+			CGSize itemSize = CGSizeZero;
+			if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+				itemSize = [item sizeWithFont:self.font];
+			} else {
+				itemSize = [item sizeWithAttributes:@{NSFontAttributeName:self.font}];
+			}
             point.x = self.firstItemOrigin.x - itemSize.width;
         } else point.x = self.firstItemOrigin.x;
         
@@ -972,11 +991,17 @@
     CGContextSaveGState(context);
     
     
-    // obtain size of drawn label
-    CGSize newSize = [label sizeWithFont:font
-                       constrainedToSize:size
-                           lineBreakMode:lineBreak];
-    
+	// obtain size of drawn label
+	CGSize newSize = CGSizeZero;
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+		newSize = [label sizeWithFont:font
+					constrainedToSize:size
+						lineBreakMode:lineBreak];
+	} else {
+		newSize = [label boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin) attributes:@{NSFontAttributeName:font} context:nil].size;
+		
+	}
+	
     // determine correct rect for this label
     CGRect rect = CGRectMake(point.x, point.y,
                              newSize.width, newSize.height);
@@ -985,11 +1010,19 @@
     CGContextSetFillColorWithColor(context, color.CGColor);
     
     // draw text
-    [label drawInRect:rect
-             withFont:font
-        lineBreakMode:lineBreak
-            alignment:alignment];
-    
+	
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+		[label drawInRect:rect
+				 withFont:font
+			lineBreakMode:lineBreak
+				alignment:alignment];
+	} else {
+		NSMutableParagraphStyle *textStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+		textStyle.lineBreakMode = lineBreak;
+		textStyle.alignment = alignment;
+		[label drawInRect:rect withAttributes:@{NSFontAttributeName:font,NSParagraphStyleAttributeName:textStyle}];
+	}
+	
     // restore context state
     CGContextRestoreGState(context);
 }
